@@ -8,6 +8,13 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView resultTextView;
     RequestQueue requestQueue;
     private static final String TAG = MainActivity.class.getSimpleName();
-    String APIurl = "PLACEHOLDER";
+    String APIurl = "https://jsonplaceholder.typicode.com/todos/1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,22 +84,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void getData(){
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        try{
+        try {
             String url = APIurl;
             JSONObject object = new JSONObject();
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            resultTextView.setText("Response: " + response.toString());
-                            Toast.makeText(getApplicationContext(), "I am OK!" + response.toString(), Toast.LENGTH_LONG).show();
-                        }
-                    }, new Response.ErrorListener(){
-                        @Override
-                        public void onErrorResponse()//LEFT OFF HERE FINISH LATER
-                    }
-
-                    });
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    resultTextView.setText("Resposne : " + response.toString());
+                    Toast.makeText(getApplicationContext(), "I am OK !" + response.toString(), Toast.LENGTH_LONG).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                }
+            });
+            requestQueue.add(jsonObjectRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
