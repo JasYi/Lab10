@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +28,9 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     private Button getApiBtn, postApiBtn;
-    private TextView resultTextView;
+    private EditText city;
     RequestQueue requestQueue;
-    String apiURL = "https://jsonplaceholder.typicode.com/todos/1";
+    String apiURL = "https://api.golf-course-database.com:8000/clubs?city=";
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         // Complete the changes added above
         ft.commit();
 
-        resultTextView = (TextView) findViewById(R.id.results);
+        city = (EditText) findViewById(R.id.city);
         getApiBtn = (Button) findViewById(R.id.getBtn);
         postApiBtn = (Button)findViewById(R.id.postBtn);
 
@@ -89,17 +90,17 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         // Enter the correct url for your api service site
-        String url = apiURL;
+        String url = apiURL + city.getText();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, object,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        resultTextView.setText("String Response : "+ response.toString());
+                        //resultTextView.setText("String Response : "+ response.toString());
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                resultTextView.setText("Error getting response");
+                //resultTextView.setText("Error getting response");
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    resultTextView.setText("Resposne : " + response.toString());
+                    //resultTextView.setText("Resposne : " + response.toString());
                     Toast.makeText(getApplicationContext(), "I am OK !" + response.toString(), Toast.LENGTH_LONG).show();
                 }
             }, new Response.ErrorListener() {
