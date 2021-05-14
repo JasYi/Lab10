@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="Enter Your City Name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -19,19 +19,18 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="get API info"
+        android:text="Find Courses!"
         app:layout_constraintTop_toBottomOf="@+id/results"
-        app:layout_constraintLeft_toLeftOf="@id/results"
-        app:layout_constraintRight_toRightOf="@+id/results"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/getBtn"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="post API info"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/getBtn"
-        app:layout_constraintLeft_toLeftOf="@+id/getBtn"
-        app:layout_constraintRight_toRightOf="@+id/getBtn"
-        android:id="@+id/postBtn"/>
+        android:id="@+id/fragmentArea"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
