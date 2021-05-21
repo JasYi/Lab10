@@ -10,17 +10,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 public class fragmentDis extends Fragment {
 
-    public static fragmentDis newInstance(String name, String website, String email) {
-        fragmentDis fragmentB = new fragmentDis();
-        Bundle args = new Bundle();//package variables into Bundle
-        args.putString("name", name);
-        args.putString("website", website);
-        args.putString("email", email);
-        fragmentB.setArguments(args);//assign bundle to arguments
-        return fragmentB;
+    ViewPager2 viewPager2;
+    int position;
+    View mView;
+
+    public static fragmentDis newInstance(ViewPager2 mViewPager, int position) {
+        fragmentDis fragment = new fragmentDis();
+        fragment.viewPager2 = mViewPager;
+        fragment.position = position;
+        return fragment;
     }
 
     //View inflation/instantiation
@@ -34,10 +36,11 @@ public class fragmentDis extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //setup here
+        mView = view;
         TextView name = view.findViewById(R.id.name);
         name.setText(getArguments().getString("name", ""));
         TextView website = view.findViewById(R.id.website);
-        website.setText(getArguments().getString("website", ""));
+        website.setText(getArguments().getString("recipe", ""));
         Button email = view.findViewById(R.id.tee);//set on click thingy
     }
 
