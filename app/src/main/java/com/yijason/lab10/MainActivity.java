@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     RecyclerView.Adapter mMyFragmentStateAdapter;
     ViewPager2 mViewPager;
+    FragmentManager myManager;
     String apiURL = "http://taco-randomizer.herokuapp.com/random/";
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         display = (TextView) findViewById(R.id.results);
         getApiBtn = (Button) findViewById(R.id.getBtn);
 
+
         // RequestQueue For Handle Network Request
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         //Click Listner for GET JSONObject
@@ -70,12 +73,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //Click Listner for POST JSONObject
-        postApiBtn.setOnClickListener(new View.OnClickListener() {
+        /*postApiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 postData();
             }
-        });
+        });*/
 
         //assign the instance of ViewPager
         mViewPager = findViewById(R.id.container);
@@ -166,9 +169,9 @@ public class MainActivity extends AppCompatActivity {
         recipe[3] = j.getJSONObject("base-layer");
         recipe[4] = j.getJSONObject("condiment");
 
-        for(int i = 0; i < recipe.length; i++) {
-            pager.get
-        }
+        /*for(int i = 0; i < recipe.length; i++) {
+            var myFrag =
+        }*/
     }
 
 }
