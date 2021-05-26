@@ -38,9 +38,9 @@ public class fragmentDis extends Fragment {
         //setup here
         mView = view;
         TextView name = view.findViewById(R.id.name);
-        name.setText(getArguments().getString("name", ""));
+        //name.setText(getArguments().getString("name", ""));
         TextView website = view.findViewById(R.id.website);
-        website.setText(getArguments().getString("recipe", ""));
+        //website.setText(getArguments().getString("recipe", ""));
         Button email = view.findViewById(R.id.tee);//set on click thingy
     }
 
