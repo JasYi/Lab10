@@ -11,6 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private Button getApiBtn, postApiBtn;
     private TextView display;
     public String cityName;
-    RequestQueue requestQueue;
+    JSONObject recipes;
     RecyclerView.Adapter mMyFragmentStateAdapter;
     ViewPager2 mViewPager;
     FragmentManager myManager;
@@ -58,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getData();
+        System.out.println(recipes + "hiiiii :)");
 
         display = (TextView) findViewById(R.id.results);
         getApiBtn = (Button) findViewById(R.id.getBtn);
@@ -98,7 +102,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public fragmentDis createFragment(int position) {
             //return a new instance of MainFragment
-            return fragmentDis.newInstance(mViewPager, position);
+            try {
+                return fragmentDis.newInstance(mViewPager, position, recipes);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
         @Override
         public int getItemCount() {
@@ -143,11 +152,8 @@ public class MainActivity extends AppCompatActivity {
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    try {
-                        display(response);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    recipes = response;
+                    Log.i("KEY", "val"); //from mr kosek ty :)
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -159,19 +165,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void display(JSONObject j) throws JSONException {
-        JSONObject[] recipe = new JSONObject[5];
-        recipe[0] = j.getJSONObject("shell");
-        recipe[1] = j.getJSONObject("seasoning");
-        recipe[2] = j.getJSONObject("mixin");
-        recipe[3] = j.getJSONObject("base-layer");
-        recipe[4] = j.getJSONObject("condiment");
-
-        /*for(int i = 0; i < recipe.length; i++) {
-            var myFrag =
-        }*/
     }
 
 }

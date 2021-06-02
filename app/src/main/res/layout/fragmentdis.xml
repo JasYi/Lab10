@@ -20,7 +20,7 @@
         app:layout_constraintTop_toBottomOf="@+id/name"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/website"
+        android:id="@+id/recipe"
         android:text="PLACEHOLDER"/>
 
     <Button
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text="Email for Tee Time"
         android:id="@+id/tee"
-        app:layout_constraintTop_toBottomOf="@+id/website"
+        app:layout_constraintTop_toBottomOf="@+id/recipe"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
