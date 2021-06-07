@@ -47,9 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private Button getApiBtn, postApiBtn;
     private TextView display;
     public String cityName;
-    JSONObject recipes;
-    RecyclerView.Adapter mMyFragmentStateAdapter;
-    ViewPager2 mViewPager;
+    fragmentDis fragmentEdit;
+    JSONObject recipes = null;
     FragmentManager myManager;
     String apiURL = "http://taco-randomizer.herokuapp.com/random/";
 
@@ -60,12 +59,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getData();
         System.out.println(recipes + "hiiiii :)");
 
         display = (TextView) findViewById(R.id.results);
         getApiBtn = (Button) findViewById(R.id.getBtn);
 
+        getData();
+        Log.i("FINDME", recipes + "");
 
         // RequestQueue For Handle Network Request
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
@@ -84,36 +84,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        //assign the instance of ViewPager
-        mViewPager = findViewById(R.id.container);
-
-        //create an adapter for the ViewPager
-        mMyFragmentStateAdapter = new MyFragmentStateAdapter(this);
-
-        //set the adapter for the ViewPager
-        mViewPager.setAdapter(mMyFragmentStateAdapter);
     }
-    public class MyFragmentStateAdapter extends FragmentStateAdapter{
 
-        public MyFragmentStateAdapter(@NonNull FragmentActivity fragmentActivity) {
-            super(fragmentActivity);
-        }
-        @NonNull
-        @Override
-        public fragmentDis createFragment(int position) {
-            //return a new instance of MainFragment
-            try {
-                return fragmentDis.newInstance(mViewPager, position, recipes);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-        @Override
-        public int getItemCount() {
-            return 5;//number of objects in ViewPager
-        }
-    }
 
     // Post Request For JSONObject
     public void postData() {
@@ -132,12 +104,12 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //resultTextView.setText("String Response : "+ response.toString());
+                        display.setText("String Response : "+ response.toString());
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //resultTextView.setText("Error getting response");
+                display.setText("Error getting response");
             }
         });
         requestQueue.add(jsonObjectRequest);
@@ -149,18 +121,32 @@ public class MainActivity extends AppCompatActivity {
         try {
             String url = apiURL;
             JSONObject object = new JSONObject();
+            Log.i("FINDME", "at start");
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
-                    recipes = response;
-                    Log.i("KEY", "val"); //from mr kosek ty :)
+                    // Begin the transaction
+                    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+
+                    // Replace the contents of the container with the new fragment
+                    try {
+                        ft.replace(R.id.container, fragmentDis.newInstance(response),"FragmentName");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    //or ft.replace(R.id.fragment_container, new FragmentB());
+
+                    // Complete the changes added above
+                    ft.commit();
+                    Log.i("FINDME", recipes + "");
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_LONG).show();
+                    Log.i("FINDME", error + "");
                 }
             });
+            Log.i("FINDME", "at end");
             requestQueue.add(jsonObjectRequest);
         } catch (Exception e) {
             e.printStackTrace();

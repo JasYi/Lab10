@@ -27,12 +27,14 @@ public class fragmentDis extends Fragment {
     JSONObject tacos;
     TextView mName;
     TextView mRecipe;
+    int i = 0;
     static String[] names = {"shell", "seasoning", "mixin", "base_layer", "condiment"};
-    public static fragmentDis newInstance(ViewPager2 mViewPager, int position, JSONObject tacos) throws JSONException {
+    public static fragmentDis newInstance(JSONObject tacos) throws JSONException {
         fragmentDis fragment = new fragmentDis();
-        fragment.viewPager2 = mViewPager;
-        fragment.mPosition = position + 1;
-        fragment.tacos = tacos.getJSONObject(names[position]);
+        if(tacos == null)
+            fragment.tacos = null;
+        else
+            fragment.tacos = tacos;
         return fragment;
     }
 
@@ -46,36 +48,48 @@ public class fragmentDis extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //add to tablayout
-        TabLayout tabLayout = getActivity().findViewById(R.id.tab_layout);
-        new TabLayoutMediator(tabLayout, viewPager2,
-                (tab, position) -> tab.setText("I am  " + (position + 1))
-        ).attach();
         //assign response to button onclick
         mButton = view.findViewById(R.id.tee);
         mName = view.findViewById(R.id.name);
         mRecipe = view.findViewById(R.id.recipe);
 
-        try {
-            mName.setText( tacos.getString("name"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            mRecipe.setText( tacos.getString("recipe"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        update();
         //set text to the current fragment's position number
-        mButton.setText("Press Me "+ mPosition);
+        mButton.setText("See Other Components");
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"toasty" + viewPager2.getCurrentItem()
-                        , Toast.LENGTH_LONG).show();
+                i++;
+                if(i >= 5)
+                    i = 0;
+                update();
             }
         });
-        System.out.println("Testing: I created a new fragment"+viewPager2.getCurrentItem());
+    }
+
+    public void update(){
+        if(tacos == null){
+            mName.setText("PRESS BUTTON");
+            mRecipe.setText("PRESS BUTTON");
+        }
+
+        else {
+            try {
+                mName.setText(tacos.getJSONObject(names[i]).getString("name"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                mRecipe.setText(tacos.getJSONObject(names[i]).getString("recipe"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 }
